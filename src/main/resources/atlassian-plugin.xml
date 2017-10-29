@@ -1,24 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
-    <plugin-info>
-        <description>${project.description}</description>
-        <version>${project.version}</version>
-        <vendor name="${project.organization.name}" url="${project.organization.url}" />
-        <param name="plugin-icon">images/pluginIcon.png</param>
-        <param name="plugin-logo">images/pluginLogo.png</param>
-    </plugin-info>
-
-    <!-- add our i18n resource -->
-    <resource type="i18n" name="i18n" location="projectFields"/>
-    
-    <!-- add our web resources -->
-    <web-resource key="projectFields-resources" name="projectFields Web Resources">
-        <dependency>com.atlassian.auiplugin:ajs</dependency>
-        
-        <resource type="download" name="projectFields.css" location="/css/projectFields.css"/>
-        <resource type="download" name="projectFields.js" location="/js/projectFields.js"/>
-        <resource type="download" name="images/" location="/images"/>
-
-        <context>projectFields</context>
-    </web-resource>
-    
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <!-- add our i18n resource -->
+  <resource type="i18n" name="i18n" location="projectFields"/>
+  <!-- add our web resources -->
+  <!--
+  <web-resource key="projectFields-resources" name="projectFields Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="projectFields.css" location="/css/projectFields.css"/>
+    <resource type="download" name="projectFields.js" location="/js/projectFields.js"/>
+    <resource type="download" name="images/" location="/images"/>
+    <context>projectFields</context>
+  </web-resource>
+  -->
+  <web-resource name="projectFields web resource" i18n-name-key="project-fieldswebresource.name" key="project-fieldswebresource">
+    <description key="project-fieldswebresource.description">The projectFields web resource Plugin</description>
+    <resource name="project_fields.js" type="download" location="/project_fields.js"/>
+    <context>bitbucket.page.projectList</context>
+  </web-resource>
+  <rest name="projectFields rest resource" i18n-name-key="project-fields-rest-resource.name" key="project-fields-rest-resource" path="/project-fields" version="1.0">
+    <description key="project-fields-rest-resource.description">The projectFields rest resource Plugin</description>
+  </rest>
+  <web-item name="projectFields web item" i18n-name-key="project-fieldswebitem.name" key="project-fieldswebitem" section="bitbucket.project.settings.panel/project-settings-section" weight="1000">
+    <description key="project-fieldswebitem.description">The projectFields web item Plugin</description>
+    <label key="project-fieldswebitem.label"></label>
+    <link linkId="project-fieldswebitem-link">/plugins/servlet/projectfields/${project.key}</link>
+  </web-item>
 </atlassian-plugin>

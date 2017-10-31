@@ -1,15 +1,15 @@
 {namespace com.mrozekma.atlassian.bitbucket.pluginFields}
 
 /**
- * Settings
+ * Project custom fields settings
  * @param project Project
  */
-{template .settings}
+{template .project_settings}
 <html>
 <head>
 <meta name="decorator" content="bitbucket.project.settings">
 <meta name="projectKey" content="{$project.key}">
-<meta name="activeTab" content="project-fields-web-item">
+<meta name="activeTab" content="project-fields-project-settings-web-item">
 <title>{$project.name} custom fields</title>
 </head>
 <body>

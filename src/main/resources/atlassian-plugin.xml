@@ -23,20 +23,47 @@
   <client-resource key="project-fields-soy" name="${project.name} soy templates">
     <directory location="/templates/"/>
   </client-resource>
+
+  <!-- ?web.items&web.panels&web.sections -->
+
+  <!-- Global settings -->
+
+  <web-item key="project-fields-global-settings-web-item" name="${project.name} global settings web item" section="atl.admin/admin-plugins-section" weight="1000">
+    <label key="project-fields-global-settings-web-item.label"/>
+    <link linkId="project-fields-global-settings-web-item-link">/plugins/servlet/project-fields-admin</link>
+  </web-item>
+
+  <web-resource key="project-fields-global-settings-resource" name="${project.name} global settings web resource">
+    <resource name="project_fields_global_settings.js" type="download" location="/js/project_fields_global_settings.js"/>
+    <context>com.mrozekma.atlassian.bitbucket.projectFields.global-settings</context>
+  </web-resource>
+
+  <servlet key="project-fields-global-settings-servlet" name="${project.name} global settings servlet" class="com.mrozekma.atlassian.bitbucket.servlet.ProjectFieldsGlobalSettingsServlet">
+    <url-pattern>/project-fields-admin</url-pattern>
+  </servlet>
+
+  <!-- Project settings -->
+
+  <web-item key="project-fields-project-settings-web-item" name="${project.name} project settings web item" section="bitbucket.project.settings.panel/project-settings-section" weight="1000">
+    <label key="project-fields-project-settings-web-item.label"/>
+    <link linkId="project-fields-project-settings-web-item-link">/plugins/servlet/project-fields/${project.key}</link>
+  </web-item>
+
+  <web-resource key="project-fields-project-settings-resource" name="${project.name} project settings web resource">
+    <resource name="project_fields_project_settings.js" type="download" location="/js/project_fields_project_settings.js"/>
+    <context>com.mrozekma.atlassian.bitbucket.projectFields.project-settings</context>
+  </web-resource>
+
+  <servlet key="project-fields-project-settings-servlet" name="${project.name} project settings servlet" class="com.mrozekma.atlassian.bitbucket.servlet.ProjectFieldsProjectSettingsServlet">
+    <url-pattern>/project-fields/*</url-pattern>
+  </servlet>
+
+  <!-- Public -->
+
   <web-resource key="project-fields-project-list-resource" name="${project.name} project list web resource">
     <resource name="project_fields.js" type="download" location="/js/project_fields.js"/>
     <context>bitbucket.page.projectList</context>
   </web-resource>
-  <web-resource key="project-fields-project-settings-resource" name="${project.name} project settings web resource">
-    <resource name="project_fields_settings.js" type="download" location="/js/project_fields_settings.js"/>
-    <context>bitbucket.page.customFieldsSettings</context>
-  </web-resource>
+
   <rest key="project-fields-rest" name="${project.name} REST API" path="/project-fields" version="1.0"/>
-  <web-item key="project-fields-web-item" name="${project.name} web item" section="bitbucket.project.settings.panel/project-settings-section" weight="1000">
-    <label key="project-fields-web-item.label"/>
-    <link linkId="project-fields-web-item-link">/plugins/servlet/project-fields/${project.key}</link>
-  </web-item>
-  <servlet key="project-fields-servlet" name="${project.name} servlet" class="com.mrozekma.atlassian.bitbucket.servlet.ProjectFieldsServlet">
-    <url-pattern>/project-fields/*</url-pattern>
-  </servlet>
 </atlassian-plugin>

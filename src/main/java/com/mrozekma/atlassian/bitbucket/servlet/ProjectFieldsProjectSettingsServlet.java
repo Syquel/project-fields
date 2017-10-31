@@ -7,11 +7,9 @@ import com.atlassian.bitbucket.project.ProjectSupplier;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.auth.LoginUriProvider;
 import com.atlassian.sal.api.message.I18nResolver;
-import com.atlassian.sal.api.user.UserKey;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.webresource.api.assembler.PageBuilderService;
 
-import com.atlassian.sal.api.user.UserProfile;
 import com.atlassian.soy.renderer.SoyTemplateRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +22,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProjectFieldsServlet extends HttpServlet{
-    private static final Logger log = LoggerFactory.getLogger(ProjectFieldsServlet.class);
+public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
+    private static final Logger log = LoggerFactory.getLogger(ProjectFieldsProjectSettingsServlet.class);
 
     @ComponentImport
     private final UserManager userManager;
@@ -48,7 +46,7 @@ public class ProjectFieldsServlet extends HttpServlet{
     @ComponentImport
     private final PageBuilderService pageBuilder;
 
-    public ProjectFieldsServlet(UserManager userManager, LoginUriProvider loginUriProvider, ProjectSupplier projectSupplier, PermissionValidationService permissionValidationService, I18nResolver i18n, SoyTemplateRenderer soyRenderer, PageBuilderService pageBuilder) {
+    public ProjectFieldsProjectSettingsServlet(UserManager userManager, LoginUriProvider loginUriProvider, ProjectSupplier projectSupplier, PermissionValidationService permissionValidationService, I18nResolver i18n, SoyTemplateRenderer soyRenderer, PageBuilderService pageBuilder) {
         this.userManager = userManager;
         this.loginUriProvider = loginUriProvider;
         this.projectSupplier = projectSupplier;
@@ -79,13 +77,13 @@ public class ProjectFieldsServlet extends HttpServlet{
         }
         this.permissionValidationService.validateForProject(project, Permission.PROJECT_ADMIN);
 
-        this.pageBuilder.assembler().resources().requireContext("bitbucket.page.customFieldsSettings");
+        this.pageBuilder.assembler().resources().requireContext("com.mrozekma.atlassian.bitbucket.projectFields.project-settings");
         resp.setContentType("text/html");
 //        resp.getWriter().write(String.format("<html><body>Hello World -- %s</body></html>", this.userManager.getRemoteUser()));
 
         final Map<String, Object> data = new HashMap<String, Object>() {{
             put("project", project);
         }};
-        this.soyRenderer.render(resp.getWriter(), "com.mrozekma.atlassian.bitbucket.projectFields:project-fields-soy", "com.mrozekma.atlassian.bitbucket.pluginFields.settings", data);
+        this.soyRenderer.render(resp.getWriter(), "com.mrozekma.atlassian.bitbucket.projectFields:project-fields-soy", "com.mrozekma.atlassian.bitbucket.pluginFields.project_settings", data);
     }
 }

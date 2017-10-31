@@ -2,7 +2,6 @@
   <library name="Maven: com.atlassian.sal:sal-api:unknown">
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/com/atlassian/sal/sal-api/unknown/sal-api-unknown.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/com/atlassian/sal/sal-api/3.1.0/sal-api-3.1.0.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/com/atlassian/sal/sal-api/unknown/sal-api-unknown-javadoc.jar!/" />

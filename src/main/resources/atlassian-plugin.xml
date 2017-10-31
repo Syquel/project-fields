@@ -20,21 +20,23 @@
     <context>projectFields</context>
   </web-resource>
   -->
-  <web-resource name="projectFields web resource" i18n-name-key="project-fieldswebresource.name" key="project-fieldswebresource">
-    <description key="project-fieldswebresource.description">The projectFields web resource Plugin</description>
-    <resource name="project_fields.js" type="download" location="/project_fields.js"/>
+  <client-resource key="project-fields-soy" name="${project.name} soy templates">
+    <directory location="/templates/"/>
+  </client-resource>
+  <web-resource key="project-fields-project-list-resource" name="${project.name} project list web resource">
+    <resource name="project_fields.js" type="download" location="/js/project_fields.js"/>
     <context>bitbucket.page.projectList</context>
   </web-resource>
-  <rest name="Project Fields rest resource" i18n-name-key="project-fields-rest-resource.name" key="project-fields-rest-resource" path="/project-fields" version="1.0">
-    <description key="project-fields-rest-resource.description">The Project Fields rest resource Plugin</description>
-  </rest>
-  <web-item name="Project Fields web item" i18n-name-key="project-fieldswebitem.name" key="project-fieldswebitem" section="bitbucket.project.settings.panel/project-settings-section" weight="1000">
-    <description key="project-fieldswebitem.description">The Project Fields web item Plugin</description>
-    <label key="project-fieldswebitem.label"/>
-    <link linkId="project-fieldswebitem-link">/plugins/servlet/projectfields/${project.key}</link>
+  <web-resource key="project-fields-project-settings-resource" name="${project.name} project settings web resource">
+    <resource name="project_fields_settings.js" type="download" location="/js/project_fields_settings.js"/>
+    <context>bitbucket.page.customFieldsSettings</context>
+  </web-resource>
+  <rest key="project-fields-rest" name="${project.name} REST API" path="/project-fields" version="1.0"/>
+  <web-item key="project-fields-web-item" name="${project.name} web item" section="bitbucket.project.settings.panel/project-settings-section" weight="1000">
+    <label key="project-fields-web-item.label"/>
+    <link linkId="project-fields-web-item-link">/plugins/servlet/project-fields/${project.key}</link>
   </web-item>
-  <servlet name="Project Fields Servlet" i18n-name-key="project-fields-servlet.name" key="project-fields-servlet" class="com.mrozekma.atlassian.bitbucket.servlet.ProjectFieldsServlet">
-    <description key="project-fields-servlet.description">The Project Fields Servlet Plugin</description>
-    <url-pattern>/projectfields/*</url-pattern>
+  <servlet key="project-fields-servlet" name="${project.name} servlet" class="com.mrozekma.atlassian.bitbucket.servlet.ProjectFieldsServlet">
+    <url-pattern>/project-fields/*</url-pattern>
   </servlet>
 </atlassian-plugin>

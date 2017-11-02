@@ -83,6 +83,12 @@
             <artifactId>atlassian-plugins-webresource-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.atlassian.activeobjects</groupId>
+            <artifactId>activeobjects-plugin</artifactId>
+            <version>1.2.3</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- WIRED TEST RUNNER DEPENDENCIES -->
         <dependency>
             <groupId>com.atlassian.plugins</groupId>
@@ -198,6 +204,11 @@
         </plugins>
     </build>
     <properties>
+        <!-- https://developer.atlassian.com/docs/faq/atlassian-plugin-sdk-faq/how-can-i-change-the-version-of-java-my-plugin-uses says to set this, but it seems to do nothing -->
+        <!-- <jdkLevel>1.8</jdkLevel> -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
         <bitbucket.data.version>5.4.1</bitbucket.data.version>
         <bitbucket.version>5.4.1</bitbucket.version>
         <amps.version>6.3.6</amps.version>

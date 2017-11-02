@@ -1,18 +1,51 @@
 {namespace com.mrozekma.atlassian.bitbucket.pluginFields}
 
 /**
- * Global custom fields settings
+ * Global settings
  */
 {template .global_settings}
-<html>
-<head>
-<meta name="decorator" content="atl.admin">
-<meta name="activeTab" content="project-fields-global-settings-web-item">
-<title>Custom project fields</title>
-</head>
-<body>
-<h2>Custom project fields</h2>
-Foobar
-</body>
-</html>
+    {@param fields: list<?>}
+    {@param field_usage: map<int, int>}
+    {@param? message: map<string, string>}
+    <html>
+    <head>
+        <meta name="decorator" content="atl.admin">
+        <meta name="activeTab" content="project-fields-global-settings-web-item">
+        <title>Custom project fields</title>
+    </head>
+    <body>
+    <h2>Custom project fields</h2>
+    {if isNonnull($message)}
+        <div class="aui-message {$message['type']}">
+            <p>{$message['message']}</p>
+        </div>
+    {/if}
+    <form method="post">
+        <table class="aui" id="custom-fields">
+            <thead>
+            <tr><th>Name</th><th>Options</th><th>Description</th><th>&nbsp;</th></tr>
+            </thead>
+            <tbody>
+                {foreach $field in $fields}
+                <tr>
+                    <input type="hidden" name="seq_{$field.ID}" value="{$field.seq}">
+                    <td><input type="text" name="name_{$field.ID}" value="{$field.name}"></td>
+                    <td><textarea name="options_{$field.ID}" rows="4">{$field.options ?: ''}</textarea></td>
+                    <td><textarea name="description_{$field.ID}" rows="4">{$field.description ?: ''}</textarea></td>
+                    <td><button type="button" data-field-id="{$field.ID}" data-field-name="{$field.name}" data-project-count="{$field_usage['' + $field.ID]}" class="aui-button remove-field"><span class="aui-icon aui-icon-small aui-iconfont-remove"></span></button></td>
+                </tr>
+                {/foreach}
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><button type="button" class="aui-button" id="add-field"><span class="aui-icon aui-icon-small aui-iconfont-list-add"></span></button></td>
+                </tr>
+            </tbody>
+        </table><br>
+        <div id="aui-message-bar"></div><br>
+        <button type="submit" class="aui-button aui-button-primary">Save</button>
+    </form>
+    </body>
+    </html>
 {/template}

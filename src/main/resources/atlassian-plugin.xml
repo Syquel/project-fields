@@ -24,6 +24,10 @@
     <directory location="/templates/"/>
   </client-resource>
 
+  <ao key="project-fields-ao" name="${project.name} active objects" namespace="com.mrozekma.atlassian.bitbucket.projectFields">
+    <entity>com.mrozekma.atlassian.bitbucket.projectFields.ao.CustomField</entity>
+  </ao>
+
   <!-- ?web.items&web.panels&web.sections -->
 
   <!-- Global settings -->
@@ -38,7 +42,7 @@
     <context>com.mrozekma.atlassian.bitbucket.projectFields.global-settings</context>
   </web-resource>
 
-  <servlet key="project-fields-global-settings-servlet" name="${project.name} global settings servlet" class="com.mrozekma.atlassian.bitbucket.servlet.ProjectFieldsGlobalSettingsServlet">
+  <servlet key="project-fields-global-settings-servlet" name="${project.name} global settings servlet" class="com.mrozekma.atlassian.bitbucket.projectFields.servlet.ProjectFieldsGlobalSettingsServlet">
     <url-pattern>/project-fields-admin</url-pattern>
   </servlet>
 
@@ -54,7 +58,7 @@
     <context>com.mrozekma.atlassian.bitbucket.projectFields.project-settings</context>
   </web-resource>
 
-  <servlet key="project-fields-project-settings-servlet" name="${project.name} project settings servlet" class="com.mrozekma.atlassian.bitbucket.servlet.ProjectFieldsProjectSettingsServlet">
+  <servlet key="project-fields-project-settings-servlet" name="${project.name} project settings servlet" class="com.mrozekma.atlassian.bitbucket.projectFields.servlet.ProjectFieldsProjectSettingsServlet">
     <url-pattern>/project-fields/*</url-pattern>
   </servlet>
 

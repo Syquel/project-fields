@@ -1,28 +1,28 @@
 {namespace com.mrozekma.atlassian.bitbucket.pluginFields}
 
 /**
- * Project custom fields settings
- * @param project Project
+ * Project settings
  */
 {template .project_settings}
-<html>
-<head>
-<meta name="decorator" content="bitbucket.project.settings">
-<meta name="projectKey" content="{$project.key}">
-<meta name="activeTab" content="project-fields-project-settings-web-item">
-<title>{$project.name} custom fields</title>
-</head>
-<body>
-<h2>Custom fields</h2>
-Test Soy template!
-<table class="aui" id="custom-fields">
-<thead>
-<tr><th>Key</th><th>Name</th><th>Options</th></tr>
-</thead>
-<tbody>
-<tr><td>foo</td><td>Foo</td><td></td></tr>
-<tr><td>bar</td><td>Bar</td><td></td></tr>
-</tbody>
-</table>
-</body>
+    {@param project: ?}
+    <html>
+    <head>
+        <meta name="decorator" content="bitbucket.project.settings">
+        <meta name="projectKey" content="{$project.key}">
+        <meta name="activeTab" content="project-fields-project-settings-web-item">
+        <title>{$project.name} custom fields</title>
+    </head>
+    <body>
+    <h2>Custom fields</h2>
+    Test Soy template!
+    <table class="aui" id="custom-fields">
+        <thead>
+        <tr><th>Key</th><th>Name</th><th>Options</th></tr>
+        </thead>
+        <tbody>
+        <tr><td>foo</td><td>Foo</td><td></td></tr>
+        <tr><td>bar</td><td>Bar</td><td></td></tr>
+        </tbody>
+    </table>
+    </body>
 {/template}

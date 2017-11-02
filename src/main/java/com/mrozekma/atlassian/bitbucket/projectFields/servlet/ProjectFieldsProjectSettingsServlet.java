@@ -1,4 +1,4 @@
-package com.mrozekma.atlassian.bitbucket.servlet;
+package com.mrozekma.atlassian.bitbucket.projectFields.servlet;
 
 import com.atlassian.bitbucket.permission.Permission;
 import com.atlassian.bitbucket.permission.PermissionValidationService;

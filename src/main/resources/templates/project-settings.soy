@@ -5,6 +5,9 @@
  */
 {template .project_settings}
     {@param project: ?}
+    {@param fields: ?}
+    {@param? message: map<string, string>}
+    {@param? configUrl: string}
     <html>
     <head>
         <meta name="decorator" content="bitbucket.project.settings">
@@ -14,15 +17,57 @@
     </head>
     <body>
     <h2>Custom fields</h2>
-    Test Soy template!
+    {if isNonnull($message)}
+    <div class="aui-message {$message['type']}">
+        <p>{$message['message']}</p>
+    </div>
+    {/if}
+    {if length($fields) > 0}
+    <form class="aui" method="POST">
     <table class="aui" id="custom-fields">
         <thead>
-        <tr><th>Key</th><th>Name</th><th>Options</th></tr>
+        <tr><th>Field</th><th>Description</th><th>Value</th></tr>
         </thead>
         <tbody>
-        <tr><td>foo</td><td>Foo</td><td></td></tr>
-        <tr><td>bar</td><td>Bar</td><td></td></tr>
+            {foreach $field in $fields}
+            <tr>
+                <td>
+                    {$field['field'].name}
+                </td>
+                <td>
+                    {$field['field'].description}
+                </td>
+                <td>
+                    {if isNonnull($field['options']) and $field['editable']}
+                    <aui-select name="val_{$field['field'].ID}" placeholder="Choose value">
+                        {foreach $opt in $field['options']}
+                        <aui-option {($field['value'] == $opt) ? 'selected' : ''}>{$opt}</aui-option>
+                        {/foreach}
+                    </aui-select>
+                    {else}
+                    <input type="text" class="text" name="val_{$field['field'].ID}" value="{$field['value']}" placeholder="Enter value" {$field['editable'] ? '' : 'readonly'}>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
         </tbody>
-    </table>
+    </table><br>
+    <button type="submit" class="aui-button aui-button-primary">Save</button>
+    </form>
+    {else}
+    <div class="aui-message aui-message-error">
+        <p class="title">
+            <strong>No Custom Fields Defined</strong>
+        </p>
+        <p>
+            There are no custom fields defined.
+            {if isNonnull($configUrl)}
+            Add new custom fields in the <a href="$configUrl">Bitbucket Administration panel</a>.
+            {else}
+            Contact a system administrator to add new custom fields.
+            {/if}
+        </p>
+    </div>
+    {/if}
     </body>
 {/template}

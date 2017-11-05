@@ -12,6 +12,7 @@ import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.soy.renderer.SoyTemplateRenderer;
 import com.atlassian.webresource.api.assembler.PageBuilderService;
 import com.mrozekma.atlassian.bitbucket.projectFields.ao.CustomField;
+import com.mrozekma.atlassian.bitbucket.projectFields.ao.CustomFieldValue;
 import net.java.ao.DBParam;
 import net.java.ao.EntityManager;
 import net.java.ao.Query;
@@ -23,28 +24,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
-    private static class ResultMessage {
-        final String type, message;
-
-        ResultMessage(String type, String message) {
-            this.type = type;
-            this.message = message;
-        }
-
-        Map<String, String> toMap() {
-            return new HashMap<String, String>() {{
-                put("type", type);
-                put("message", message);
-            }};
-        }
-    }
-
     private static final Logger log = LoggerFactory.getLogger(ProjectFieldsGlobalSettingsServlet.class);
 
     @ComponentImport
@@ -89,9 +71,9 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
 
         /*
         this.activeObjects.deleteWithSQL(CustomField.class, "1 = 1");
-        this.activeObjects.create(CustomField.class, new DBParam("SEQ", 1), new DBParam("NAME", "First"), new DBParam("DESCRIPTION", ""), new DBParam("OPTIONS", "opt1\nopt2\nopt3")).getID();
-        this.activeObjects.create(CustomField.class, new DBParam("SEQ", 2), new DBParam("NAME", "Second"), new DBParam("DESCRIPTION", ""), new DBParam("OPTIONS", null)).getID();
-        this.activeObjects.create(CustomField.class, new DBParam("SEQ", 3), new DBParam("NAME", "Third"), new DBParam("DESCRIPTION", "Test description for the third custom field."), new DBParam("OPTIONS", null)).getID();
+        this.activeObjects.create(CustomField.class, new DBParam("SEQ", 1), new DBParam("NAME", "First"), new DBParam("DESCRIPTION", ""), new DBParam("OPTIONS", "opt1\nopt2\nopt3"), new DBParam("VISIBLE", true), new DBParam("EDITABLE", true)).getID();
+        this.activeObjects.create(CustomField.class, new DBParam("SEQ", 2), new DBParam("NAME", "Second"), new DBParam("DESCRIPTION", ""), new DBParam("OPTIONS", null), new DBParam("VISIBLE", false), new DBParam("EDITABLE", true)).getID();
+        this.activeObjects.create(CustomField.class, new DBParam("SEQ", 3), new DBParam("NAME", "Third"), new DBParam("DESCRIPTION", "Test description for the third custom field."), new DBParam("OPTIONS", null), new DBParam("VISIBLE", true), new DBParam("EDITABLE", false)).getID();
         */
 
         this.renderTemplate(resp, Optional.empty());
@@ -100,6 +82,13 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //TODO Audit logging
         this.permissionValidationService.validateForGlobal(Permission.ADMIN);
+
+        /*
+        for(Map.Entry<String, String[]> e : req.getParameterMap().entrySet()) {
+            resp.getWriter().format("%s: %s\n", e.getKey(), Arrays.stream(e.getValue()).collect(Collectors.joining(", ")));
+        }
+        if(true) return;
+        */
 
         boolean changed = this.activeObjects.executeInTransaction(() -> {
             boolean[] rtn = {false};
@@ -131,17 +120,38 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
                     field.setName(name);
                 }
 
-                //TODO Clear option for any projects that no longer match
                 final String options = req.getParameter("options_" + id);
                 if(!options.equals(field.getOptions())) {
                     rtn[0] = true;
                     field.setOptions(options);
+
+                    if(!options.isEmpty()) {
+                        final List<String> splitOptions = Arrays.asList(options.split("\n"));
+                        for(CustomFieldValue value : this.activeObjects.find(CustomFieldValue.class, Query.select().where("VALUE != ''"))) {
+                            final String cur = value.getValue();
+                            if(cur != null && !cur.isEmpty() && !splitOptions.contains(cur)) {
+                                value.setValue("");
+                            }
+                        }
+                    }
                 }
 
                 final String description = req.getParameter("description_" + id);
                 if(!description.equals(field.getDescription())) {
                     rtn[0] = true;
                     field.setDescription(description);
+                }
+
+                final boolean visible = (req.getParameter("visible_" + id) != null);
+                if(visible != field.isVisibleInProjectList()) {
+                    rtn[0] = true;
+                    field.setVisibleInProjectList(visible);
+                }
+
+                final boolean editable = (req.getParameter("editable_" + id) != null);
+                if(editable != field.isEditableByProjectAdmins()) {
+                    rtn[0] = true;
+                    field.setEditableByProjectAdmins(editable);
                 }
 
                 field.save();
@@ -156,7 +166,9 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
                             new DBParam("SEQ", Integer.parseInt(req.getParameter("seq_" + id))),
                             new DBParam("NAME", req.getParameter("name_" + id)),
                             new DBParam("OPTIONS", req.getParameter("options_" + id)),
-                            new DBParam("DESCRIPTION", req.getParameter("description_" + id))
+                            new DBParam("DESCRIPTION", req.getParameter("description_" + id)),
+                            new DBParam("VISIBLE", (req.getParameter("visible_" + id) != null)),
+                            new DBParam("EDITABLE", (req.getParameter("editable_" + id) != null))
                     );
                 }
             });
@@ -165,7 +177,7 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
         });
 
         final ResultMessage message = changed
-                ? new ResultMessage("success", "Your changes have been saved.")
+                ? new ResultMessage("success", this.i18n.getText("bitbucket.web.changes.saved"))
                 : new ResultMessage("info", "No changes found.");
         this.renderTemplate(resp, Optional.of(message));
     }

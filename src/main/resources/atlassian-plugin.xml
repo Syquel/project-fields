@@ -26,6 +26,7 @@
 
   <ao key="project-fields-ao" name="${project.name} active objects" namespace="com.mrozekma.atlassian.bitbucket.projectFields">
     <entity>com.mrozekma.atlassian.bitbucket.projectFields.ao.CustomField</entity>
+    <entity>com.mrozekma.atlassian.bitbucket.projectFields.ao.CustomFieldValue</entity>
   </ao>
 
   <!-- ?web.items&web.panels&web.sections -->
@@ -54,6 +55,7 @@
   </web-item>
 
   <web-resource key="project-fields-project-settings-resource" name="${project.name} project settings web resource">
+    <resource name="project_fields_project_settings.css" type="download" location="/css/project_fields_project_settings.css"/>
     <resource name="project_fields_project_settings.js" type="download" location="/js/project_fields_project_settings.js"/>
     <context>com.mrozekma.atlassian.bitbucket.projectFields.project-settings</context>
   </web-resource>

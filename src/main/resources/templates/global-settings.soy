@@ -20,25 +20,25 @@
             <p>{$message['message']}</p>
         </div>
     {/if}
-    <form method="post">
+    <form class="aui" method="post">
         <table class="aui" id="custom-fields">
             <thead>
-            <tr><th>Name</th><th>Options</th><th>Description</th><th>&nbsp;</th></tr>
+            <tr><th>Name</th><th>Options</th><th>Description</th><th>Visible</th><th>Editable</th></th><th>&nbsp;</th></tr>
             </thead>
             <tbody>
                 {foreach $field in $fields}
                 <tr>
                     <input type="hidden" name="seq_{$field.ID}" value="{$field.seq}">
-                    <td><input type="text" name="name_{$field.ID}" value="{$field.name}"></td>
-                    <td><textarea name="options_{$field.ID}" rows="4">{$field.options ?: ''}</textarea></td>
-                    <td><textarea name="description_{$field.ID}" rows="4">{$field.description ?: ''}</textarea></td>
+                    <td><input type="text" class="text" name="name_{$field.ID}" value="{$field.name}"></td>
+                    <td><textarea class="textarea long-field expanding expanding-init" name="options_{$field.ID}" rows="4">{$field.options ?: ''}</textarea></td>
+                    <td><textarea class="textarea long-field expanding expanding-init" name="description_{$field.ID}" rows="4">{$field.description ?: ''}</textarea></td>
+                    <td><aui-toggle name="visible_{$field.ID}" {$field.visibleInProjectList ? 'checked' : ''}></aui-toggle></td>
+                    <td><aui-toggle name="editable_{$field.ID}" {$field.editableByProjectAdmins ? 'checked' : ''}></aui-toggle></td>
                     <td><button type="button" data-field-id="{$field.ID}" data-field-name="{$field.name}" data-project-count="{$field_usage['' + $field.ID]}" class="aui-button remove-field"><span class="aui-icon aui-icon-small aui-iconfont-remove"></span></button></td>
                 </tr>
                 {/foreach}
                 <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td colspan="5">&nbsp;</td>
                     <td><button type="button" class="aui-button" id="add-field"><span class="aui-icon aui-icon-small aui-iconfont-list-add"></span></button></td>
                 </tr>
             </tbody>

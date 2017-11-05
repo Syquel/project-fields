@@ -52,7 +52,16 @@ public class ProjectFieldsData implements WebResourceDataProvider, Jsonable {
     @Override public void write(Writer writer) throws IOException {
         /*
         {
-          "fields": ["field1", "field2", ...],
+          "fields": [
+            {
+              "name": "field1",
+              "description": "description 1"
+            },
+            {
+              "name": "field2",
+              "description": "description 2"
+            }
+          ],
           "projects": {
             "PROJECT1": {
               "field1": "value 1",
@@ -70,7 +79,10 @@ public class ProjectFieldsData implements WebResourceDataProvider, Jsonable {
         final JsonArray jsonFields = new JsonArray();
         json.add("fields", jsonFields);
         for(CustomField field : this.activeObjects.find(CustomField.class, Query.select().where("VISIBLE = ?", true).order("SEQ asc"))) {
-            jsonFields.add(new JsonPrimitive(field.getName()));
+            final JsonObject fieldJSON = new JsonObject();
+            fieldJSON.addProperty("name", field.getName());
+            fieldJSON.addProperty("description", field.getDescription());
+            jsonFields.add(fieldJSON);
             fields.put(field.getID(), field);
         }
 

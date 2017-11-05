@@ -191,9 +191,7 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
             put("fields", fields);
             put("field_usage", new HashMap<String, Integer>() {{
                 for(CustomField field : fields) {
-                    //TODO
-                    //activeObjects.count(CustomField.class, Query.select().where(""))
-                    put("" + field.getID(), field.getSeq() == 2 ? 0 : 3);
+                    put("" + field.getID(), activeObjects.count(CustomFieldValue.class, Query.select().where("FIELD_ID = ?", field.getID())));
                 }
             }});
             resultMessage.ifPresent(message -> put("message", message.toMap()));

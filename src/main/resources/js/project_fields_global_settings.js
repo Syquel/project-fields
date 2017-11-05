@@ -18,8 +18,8 @@ require(['jquery'], function($) {
                 '<input type="hidden" name="add" value="' + newID + '">' +
                 '<input type="hidden" name="seq_' + newID + '" value="0">' +
                 '<td><input class="text" type="text" name="name_' + newID + '"></td>' +
-                '<td><textarea class="textarea long-field expanding expanding-init" name="options_' + newID + '" rows="4"></textarea></td>' +
                 '<td><textarea class="textarea long-field expanding expanding-init" name="description_' + newID + '" rows="4"></textarea></td>' +
+                '<td><textarea class="textarea long-field expanding expanding-init" name="options_' + newID + '" rows="4"></textarea></td>' +
                 '<td><aui-toggle name="visible_' + newID + '" checked></aui-toggle></td>' +
                 '<td><aui-toggle name="editable_' + newID + '" checked></aui-toggle></td>' +
                 '<td><button type="button" class="aui-button remove-field"><span class="aui-icon aui-icon-small aui-iconfont-remove"></span></button></td>' +

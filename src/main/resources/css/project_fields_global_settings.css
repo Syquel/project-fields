@@ -1,0 +1,14 @@
+#custom-fields-help {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin: 10px 0 20px 0;
+    padding: 20px;
+}
+
+#custom-fields-help ul {
+    margin: 10px 0 10px 0;
+}
+
+#custom-fields-help-content {
+    min-height: 1.5em;
+}

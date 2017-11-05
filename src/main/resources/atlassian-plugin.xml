@@ -39,8 +39,10 @@
   </web-item>
 
   <web-resource key="project-fields-global-settings-resource" name="${project.name} global settings web resource">
+    <resource name="project_fields_global_settings.css" type="download" location="/css/project_fields_global_settings.css"/>
     <resource name="project_fields_global_settings.js" type="download" location="/js/project_fields_global_settings.js"/>
     <context>com.mrozekma.atlassian.bitbucket.projectFields.global-settings</context>
+    <dependency>com.atlassian.auiplugin:aui-experimental-expander</dependency>
   </web-resource>
 
   <servlet key="project-fields-global-settings-servlet" name="${project.name} global settings servlet" class="com.mrozekma.atlassian.bitbucket.projectFields.servlet.ProjectFieldsGlobalSettingsServlet">

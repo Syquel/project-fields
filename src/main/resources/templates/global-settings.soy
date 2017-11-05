@@ -20,31 +20,50 @@
             <p>{$message['message']}</p>
         </div>
     {/if}
+    <div id="custom-fields-help">
+        <h3>Instructions</h3>
+        <div id="custom-fields-help-content" class="aui-expander-content">
+            Custom project fields allow you to attach arbitrary pieces of information to Bitbucket projects. Each field is specified by the following values:
+            <ul>
+                <li><b>Name</b>: The name of the field, displayed on the project list and each project's settings page.</li>
+                <li><b>Description</b>: More information about the field.</li>
+                <li><b>Options</b>: Possible values for the field, one per line. If left blank, the field is free-form and allows any value.</li>
+                <li><b>Visible</b>: If set, the field is shown on the project list. If not, the field's value is only visible in the project's settings.</li>
+                <li><b>Editable</b>: If set, project admins can set the field's value. If not, only system admins can update it.</li>
+            </ul>
+            Fields can be added by clicking the <span class="aui-icon aui-icon-small aui-iconfont-list-add"></span> button, removed with the <span class="aui-icon aui-icon-small aui-iconfont-remove"></span> button, and rearranged by drag-and-dropping the field's row.
+            You can change a field's name or description freely, but if you remove the field the information associated with that field on existing projects will be permanently lost, even if you make a new field in the future with the same name.<br><br>
+            Once the fields are configured, values can be assigned on the <b>Custom fields</b> tab on each project's settings page.
+            <a id="custom-fields-help-trigger" data-replace-text="Show less" data-replace-selector=".custom-fields-help-trigger-text"
+               class="aui-expander-trigger aui-expander-reveal-text" aria-controls="custom-fields-help-content">
+                <span class="custom-fields-help-trigger-text">Show more</span>
+            </a>
+        </div>
+    </div>
     <form class="aui" method="post">
         <table class="aui" id="custom-fields">
             <thead>
-            <tr><th>Name</th><th>Options</th><th>Description</th><th>Visible</th><th>Editable</th></th><th>&nbsp;</th></tr>
+            <tr><th>Name</th><th>Description</th><th>Options</th><th>Visible</th><th>Editable</th></th><th>&nbsp;</th></tr>
             </thead>
             <tbody>
                 {foreach $field in $fields}
                 <tr>
                     <input type="hidden" name="seq_{$field.ID}" value="{$field.seq}">
                     <td><input type="text" class="text" name="name_{$field.ID}" value="{$field.name}"></td>
-                    <td><textarea class="textarea long-field expanding expanding-init" name="options_{$field.ID}" rows="4">{$field.options ?: ''}</textarea></td>
                     <td><textarea class="textarea long-field expanding expanding-init" name="description_{$field.ID}" rows="4">{$field.description ?: ''}</textarea></td>
+                    <td><textarea class="textarea long-field expanding expanding-init" name="options_{$field.ID}" rows="4">{$field.options ?: ''}</textarea></td>
                     <td><aui-toggle name="visible_{$field.ID}" {$field.visibleInProjectList ? 'checked' : ''}></aui-toggle></td>
                     <td><aui-toggle name="editable_{$field.ID}" {$field.editableByProjectAdmins ? 'checked' : ''}></aui-toggle></td>
                     <td><button type="button" data-field-id="{$field.ID}" data-field-name="{$field.name}" data-project-count="{$field_usage['' + $field.ID]}" class="aui-button remove-field"><span class="aui-icon aui-icon-small aui-iconfont-remove"></span></button></td>
                 </tr>
                 {/foreach}
                 <tr>
-                    <td colspan="5">&nbsp;</td>
+                    <td colspan="5"><button type="submit" class="aui-button aui-button-primary">Save</button></td>
                     <td><button type="button" class="aui-button" id="add-field"><span class="aui-icon aui-icon-small aui-iconfont-list-add"></span></button></td>
                 </tr>
             </tbody>
         </table><br>
         <div id="aui-message-bar"></div><br>
-        <button type="submit" class="aui-button aui-button-primary">Save</button>
     </form>
     </body>
     </html>

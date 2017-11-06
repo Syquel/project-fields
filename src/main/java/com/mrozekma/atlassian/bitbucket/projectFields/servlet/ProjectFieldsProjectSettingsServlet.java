@@ -127,6 +127,7 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
                                 final String newVal = updates.get(field.getID());
                                 if(newVal != null) {
                                     val.setValue(newVal);
+                                    val.save();
                                 }
                             } else {
                                 // Delete value

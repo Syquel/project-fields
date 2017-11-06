@@ -126,11 +126,11 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
                     field.setOptions(options);
 
                     if(!options.isEmpty()) {
-                        final List<String> splitOptions = Arrays.asList(options.split("\n"));
-                        for(CustomFieldValue value : this.activeObjects.find(CustomFieldValue.class, Query.select().where("VALUE != ''"))) {
+                        final List<String> splitOptions = Arrays.asList(options.split("\r?\n"));
+                        for(CustomFieldValue value : this.activeObjects.find(CustomFieldValue.class, Query.select().where("FIELD_ID = ? AND VALUE != ''", field.getID()))) {
                             final String cur = value.getValue();
                             if(cur != null && !cur.isEmpty() && !splitOptions.contains(cur)) {
-                                value.setValue("");
+                                this.activeObjects.delete(value);
                             }
                         }
                     }

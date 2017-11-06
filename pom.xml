@@ -12,6 +12,9 @@
     <name>Project Fields</name>
     <description>Add custom arbitrary fields to Bitbucket projects.</description>
     <packaging>atlassian-plugin</packaging>
+    <scm>
+        <developerConnection>scm:git:git@bitbucket.org:mrozekma/project-fields.git</developerConnection>
+    </scm>
     <dependencyManagement>
         <dependencies>
             <dependency>

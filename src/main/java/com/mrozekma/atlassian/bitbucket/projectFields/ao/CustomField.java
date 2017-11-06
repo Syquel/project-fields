@@ -22,8 +22,6 @@ public interface CustomField extends Entity {
     String getOptions();
     void setOptions(String options);
 
-    //TODO Global settings UI for these:
-
     @Accessor("visible")
     boolean isVisibleInProjectList();
     @Mutator("visible")

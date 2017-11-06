@@ -5,21 +5,12 @@
     <description>${project.description}</description>
     <version>${project.version}</version>
     <vendor name="${project.organization.name}" url="${project.organization.url}"/>
-    <param name="plugin-icon">images/pluginIcon.png</param>
-    <param name="plugin-logo">images/pluginLogo.png</param>
+    <param name="plugin-icon">images/logo.png</param>
+    <param name="plugin-logo">images/logo.png</param>
   </plugin-info>
-  <!-- add our i18n resource -->
+
   <resource type="i18n" name="i18n" location="projectFields"/>
-  <!-- add our web resources -->
-  <!--
-  <web-resource key="projectFields-resources" name="projectFields Web Resources">
-    <dependency>com.atlassian.auiplugin:ajs</dependency>
-    <resource type="download" name="projectFields.css" location="/css/projectFields.css"/>
-    <resource type="download" name="projectFields.js" location="/js/projectFields.js"/>
-    <resource type="download" name="images/" location="/images"/>
-    <context>projectFields</context>
-  </web-resource>
-  -->
+
   <client-resource key="project-fields-soy" name="${project.name} soy templates">
     <directory location="/templates/"/>
   </client-resource>

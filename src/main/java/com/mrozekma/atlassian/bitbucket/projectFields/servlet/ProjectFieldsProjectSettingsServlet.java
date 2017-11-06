@@ -9,11 +9,13 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.auth.LoginUriProvider;
 import com.atlassian.sal.api.message.I18nResolver;
 import com.atlassian.sal.api.user.UserManager;
+import com.atlassian.upm.api.license.PluginLicenseManager;
 import com.atlassian.webresource.api.assembler.PageBuilderService;
 
 import com.atlassian.soy.renderer.SoyTemplateRenderer;
 import com.mrozekma.atlassian.bitbucket.projectFields.ao.CustomField;
 import com.mrozekma.atlassian.bitbucket.projectFields.ao.CustomFieldValue;
+import com.mrozekma.atlassian.bitbucket.projectFields.impl.License;
 import net.java.ao.DBParam;
 import net.java.ao.Query;
 import org.slf4j.Logger;
@@ -54,7 +56,10 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
     @ComponentImport
     private final ActiveObjects activeObjects;
 
-    public ProjectFieldsProjectSettingsServlet(UserManager userManager, LoginUriProvider loginUriProvider, ProjectSupplier projectSupplier, PermissionValidationService permissionValidationService, I18nResolver i18n, SoyTemplateRenderer soyRenderer, PageBuilderService pageBuilder, ActiveObjects activeObjects) {
+    @ComponentImport
+    private final PluginLicenseManager pluginLicenseManager;
+
+    public ProjectFieldsProjectSettingsServlet(UserManager userManager, LoginUriProvider loginUriProvider, ProjectSupplier projectSupplier, PermissionValidationService permissionValidationService, I18nResolver i18n, SoyTemplateRenderer soyRenderer, PageBuilderService pageBuilder, ActiveObjects activeObjects, PluginLicenseManager pluginLicenseManager) {
         this.userManager = userManager;
         this.loginUriProvider = loginUriProvider;
         this.projectSupplier = projectSupplier;
@@ -63,6 +68,7 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
         this.soyRenderer = soyRenderer;
         this.pageBuilder = pageBuilder;
         this.activeObjects = activeObjects;
+        this.pluginLicenseManager = pluginLicenseManager;
     }
 
     @Override
@@ -103,6 +109,18 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
         }
 
         this.permissionValidationService.validateForProject(project, Permission.PROJECT_ADMIN);
+
+        final Optional<String> licenseError = License.getErrorBox(this.pluginLicenseManager, this.i18n);
+        if(licenseError.isPresent()) {
+            resp.setContentType("text/html");
+            final Map<String, Object> data = new HashMap<String, Object>() {{
+                put("project", project);
+                put("license_error_box", licenseError.get());
+            }};
+            this.soyRenderer.render(resp.getWriter(), "com.mrozekma.atlassian.bitbucket.projectFields:project-fields-soy", "com.mrozekma.atlassian.bitbucket.pluginFields.project_settings_expired", data);
+            return;
+        }
+
         boolean isSysadmin = this.userManager.isSystemAdmin(this.userManager.getRemoteUserKey());
 
         final List<Map<String, Object>> values = new LinkedList<>();
@@ -159,9 +177,7 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
             return null;
         });
 
-        this.pageBuilder.assembler().resources()
-                .requireContext("com.mrozekma.atlassian.bitbucket.projectFields.project-settings")
-                .requireWebResource("com.atlassian.auiplugin:aui-select");
+        this.pageBuilder.assembler().resources().requireContext("com.mrozekma.atlassian.bitbucket.projectFields.project-settings");
 
         resp.setContentType("text/html");
 

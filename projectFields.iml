@@ -26,6 +26,8 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.atlassian.plugins:atlassian-plugins-webresource-api:unknown" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.atlassian.activeobjects:activeobjects-plugin:1.2.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.atlassian.json:atlassian-json-api:unknown" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.atlassian.upm:licensing-api:2.21.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.atlassian.upm:upm-api:2.21" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.atlassian.plugins:atlassian-plugins-osgi-testrunner:1.2.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.0" level="project" />

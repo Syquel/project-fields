@@ -5,6 +5,7 @@
     <description>${project.description}</description>
     <version>${project.version}</version>
     <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="atlassian-licensing-enabled">true</param>
     <param name="plugin-icon">images/logo.png</param>
     <param name="plugin-logo">images/logo.png</param>
   </plugin-info>
@@ -51,6 +52,7 @@
     <resource name="project_fields_project_settings.css" type="download" location="/css/project_fields_project_settings.css"/>
     <resource name="project_fields_project_settings.js" type="download" location="/js/project_fields_project_settings.js"/>
     <context>com.mrozekma.atlassian.bitbucket.projectFields.project-settings</context>
+    <dependency>com.atlassian.auiplugin:aui-select</dependency>
   </web-resource>
 
   <servlet key="project-fields-project-settings-servlet" name="${project.name} project settings servlet" class="com.mrozekma.atlassian.bitbucket.projectFields.servlet.ProjectFieldsProjectSettingsServlet">

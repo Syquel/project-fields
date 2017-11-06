@@ -70,4 +70,25 @@
     </div>
     {/if}
     </body>
+    </html>
+{/template}
+
+/**
+ * Project settings, license expired
+ */
+{template .project_settings_expired}
+    {@param project: ?}
+    {@param? license_error_box: string}
+    <html>
+    <head>
+        <meta name="decorator" content="bitbucket.project.settings">
+        <meta name="projectKey" content="{$project.key}">
+        <meta name="activeTab" content="project-fields-project-settings-web-item">
+        <title>{$project.name} custom fields</title>
+    </head>
+    <body>
+    <h2>Custom fields</h2>
+    {$license_error_box|noAutoescape}
+    </body>
+    </html>
 {/template}

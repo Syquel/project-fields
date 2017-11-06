@@ -59,22 +59,6 @@
 
   <!-- Public -->
 
-  <!--
-  <web-resource key="project-fields-project-list-resource" name="${project.name} project list web resource">
-    <resource name="project_fields.js" type="download" location="/js/project_fields.js"/>
-    <context>bitbucket.page.projectList</context>
-  </web-resource>
-
-  <rest key="project-fields-rest" name="${project.name} REST API" path="/project-fields" version="1.0"/>
-  -->
-
-  <!--
-  <servlet key="project-fields-js-servlet" name="${project.name} Javascript servlet" class="com.mrozekma.atlassian.bitbucket.projectFields.servlet.ProjectFieldsJavascriptServlet">
-    <url-pattern>/project-fields.js</url-pattern>
-    <context>bitbucket.page.projectList</context>
-  </servlet>
-  -->
-
   <web-resource key="project-fields-project-list-resource" name="${project.name} project list web resource">
     <resource name="project_fields.js" type="download" location="/js/project_fields.js"/>
     <context>bitbucket.page.projectList</context>

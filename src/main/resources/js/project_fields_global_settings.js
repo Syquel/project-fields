@@ -35,16 +35,21 @@ require(['jquery'], function($) {
         });
 
         $('table#custom-fields button.remove-field').click(function() {
-            project_count = parseInt($(this).data('project-count'), 10);
-            if(project_count) {
-                AJS.messages.warning({
-                    title: 'Field removed',
-                    body: 'Field <b>' + AJS.escapeHtml($(this).data('field-name')) + '</b> removed. This field was used by ' + project_count + (project_count == 1 ? ' project' : ' projects') + ' -- if you click Save the data ' + (project_count == 1 ? 'that project' : 'those projects') + ' stored in this field will be lost.',
-                });
-            }
-            $(this).parents('form').append($('<input/>').attr('type', 'hidden').attr('name', 'delete').attr('value', $(this).data('field-id')));
-            $(this).parents('tr').remove();
+            id = $(this).data('field-id');
+            newRow = $('<tr/>');
+            newRow.append($('<td/>').attr('colspan', '6').attr('id', 'row_' + id));
+            newRow.append($('<input/>').attr('type', 'hidden').attr('name', 'delete').attr('value', id));
+            $(this).parents('tr').replaceWith(newRow);
             resequence();
+
+            project_count = parseInt($(this).data('project-count'), 10);
+            AJS.messages.warning('#row_' + id, {
+                closeable: false,
+                title: 'Removing field ' + AJS.escapeHtml($(this).data('field-name')),
+                body: project_count
+                    ? 'This field is used by ' + project_count + (project_count == 1 ? ' project' : ' projects') + ' &mdash; click Save to finish removing this field and the associated project ' + (project_count == 1 ? 'value.' : 'values.')
+                    : 'Click Save to finish removing this field.',
+            });
         });
     });
 });

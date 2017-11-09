@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<atlassian-plugin-marketing>
+    <compatibility>
+        <product name="bitbucket" min="5.0.0" max="5.5.0"/>
+    </compatibility>
+    <logo image="images/logo.png"/>
+    <highlights>
+        <highlight image="images/highlights/global-settings.png" cropped="images/highlights/global-settings-cropped.png"/>
+        <highlight image="images/highlights/project-settings.png" cropped="images/highlights/project-settings-cropped.png"/>
+        <highlight image="images/highlights/project-list.png" cropped="images/highlights/project-list-cropped.png"/>
+    </highlights>
+</atlassian-plugin-marketing>

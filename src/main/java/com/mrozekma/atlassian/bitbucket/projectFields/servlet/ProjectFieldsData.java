@@ -1,6 +1,7 @@
 package com.mrozekma.atlassian.bitbucket.projectFields.servlet;
 
 import com.atlassian.activeobjects.external.ActiveObjects;
+import com.atlassian.bitbucket.AuthorisationException;
 import com.atlassian.bitbucket.permission.Permission;
 import com.atlassian.bitbucket.permission.PermissionService;
 import com.atlassian.bitbucket.permission.PermissionValidationService;
@@ -101,7 +102,13 @@ public class ProjectFieldsData implements WebResourceDataProvider, Jsonable {
             final UserProfile user = this.userManager.getRemoteUser();
 
             for(CustomFieldValue value : this.activeObjects.find(CustomFieldValue.class)) {
-                if(projectKeys.computeIfAbsent(value.getProjectKey(), key -> this.permissionService.hasProjectPermission(this.projectSupplier.getByKey(key), Permission.PROJECT_READ))) {
+                if(projectKeys.computeIfAbsent(value.getProjectKey(), key -> {
+                    try {
+                        return this.permissionService.hasProjectPermission(this.projectSupplier.getByKey(key), Permission.PROJECT_READ);
+                    } catch(AuthorisationException e) {
+                        return false;
+                    }
+                })) {
                     final String projectKey = value.getProjectKey();
                     if(fields.containsKey(value.getFieldId())) {
                         if(!projects.has(projectKey)) {

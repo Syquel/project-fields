@@ -7,7 +7,6 @@
     {@param fields: list<?>}
     {@param field_usage: map<int, int>}
     {@param? message: map<string, string>}
-    {@param? license_error_box: string}
     <html>
     <head>
         <meta name="decorator" content="atl.admin">
@@ -16,9 +15,6 @@
     </head>
     <body>
     <h2>Custom project fields</h2>
-    {if isNonnull($license_error_box)}
-        {$license_error_box|noAutoescape}
-    {/if}
     {if isNonnull($message)}
         <div class="aui-message aui-message-{$message['type']}">
             <p>{$message['message']}</p>

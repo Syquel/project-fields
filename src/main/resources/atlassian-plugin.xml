@@ -5,7 +5,6 @@
     <description>${project.description}</description>
     <version>${project.version}</version>
     <vendor name="${project.organization.name}" url="${project.organization.url}"/>
-    <param name="atlassian-licensing-enabled">true</param>
     <param name="plugin-icon">images/logo.png</param>
     <param name="plugin-logo">images/logo.png</param>
   </plugin-info>

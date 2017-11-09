@@ -7,19 +7,12 @@ import com.atlassian.bitbucket.project.ProjectSupplier;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.auth.LoginUriProvider;
 import com.atlassian.sal.api.message.I18nResolver;
-import com.atlassian.sal.api.transaction.TransactionCallback;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.soy.renderer.SoyTemplateRenderer;
-import com.atlassian.upm.api.license.PluginLicenseManager;
-import com.atlassian.upm.api.license.entity.LicenseError;
-import com.atlassian.upm.api.license.entity.PluginLicense;
-import com.atlassian.upm.api.util.Option;
 import com.atlassian.webresource.api.assembler.PageBuilderService;
 import com.mrozekma.atlassian.bitbucket.projectFields.ao.CustomField;
 import com.mrozekma.atlassian.bitbucket.projectFields.ao.CustomFieldValue;
-import com.mrozekma.atlassian.bitbucket.projectFields.impl.License;
 import net.java.ao.DBParam;
-import net.java.ao.EntityManager;
 import net.java.ao.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,10 +51,7 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
     @ComponentImport
     private final ActiveObjects activeObjects;
 
-    @ComponentImport
-    private final PluginLicenseManager pluginLicenseManager;
-
-    public ProjectFieldsGlobalSettingsServlet(UserManager userManager, LoginUriProvider loginUriProvider, ProjectSupplier projectSupplier, PermissionValidationService permissionValidationService, I18nResolver i18n, SoyTemplateRenderer soyRenderer, PageBuilderService pageBuilder, ActiveObjects activeObjects, PluginLicenseManager pluginLicenseManager) {
+    public ProjectFieldsGlobalSettingsServlet(UserManager userManager, LoginUriProvider loginUriProvider, ProjectSupplier projectSupplier, PermissionValidationService permissionValidationService, I18nResolver i18n, SoyTemplateRenderer soyRenderer, PageBuilderService pageBuilder, ActiveObjects activeObjects) {
         this.userManager = userManager;
         this.loginUriProvider = loginUriProvider;
         this.projectSupplier = projectSupplier;
@@ -70,7 +60,6 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
         this.soyRenderer = soyRenderer;
         this.pageBuilder = pageBuilder;
         this.activeObjects = activeObjects;
-        this.pluginLicenseManager = pluginLicenseManager;
     }
 
     @Override
@@ -204,7 +193,6 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
                 }
             }});
             resultMessage.ifPresent(message -> put("message", message.toMap()));
-            License.getErrorBox(pluginLicenseManager, i18n).ifPresent(err -> put("license_error_box", err));
         }};
         this.soyRenderer.render(resp.getWriter(), "com.mrozekma.atlassian.bitbucket.projectFields:project-fields-soy", "com.mrozekma.atlassian.bitbucket.pluginFields.global_settings", data);
     }

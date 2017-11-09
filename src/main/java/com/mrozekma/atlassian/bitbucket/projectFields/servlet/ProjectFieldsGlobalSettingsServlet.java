@@ -118,13 +118,13 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
                     field.setName(name);
                 }
 
-                final String options = req.getParameter("options_" + id);
+                final String options = req.getParameter("options_" + id).replaceAll("(\r?\n)+", "\n");
                 if(!options.equals(field.getOptions())) {
                     rtn[0] = true;
                     field.setOptions(options);
 
                     if(!options.isEmpty()) {
-                        final List<String> splitOptions = Arrays.asList(options.split("\r?\n"));
+                        final List<String> splitOptions = Arrays.asList(options.split("\n"));
                         for(CustomFieldValue value : this.activeObjects.find(CustomFieldValue.class, Query.select().where("FIELD_ID = ? AND VALUE != ''", field.getID()))) {
                             final String cur = value.getValue();
                             if(cur != null && !cur.isEmpty() && !splitOptions.contains(cur)) {

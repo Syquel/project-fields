@@ -108,7 +108,7 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
         final List<Map<String, Object>> values = new LinkedList<>();
         this.activeObjects.executeInTransaction(() -> {
             for(CustomField field : this.activeObjects.find(CustomField.class)) {
-                final String[] options = field.getOptions().isEmpty() ? null : field.getOptions().split("\r?\n");
+                final String[] options = field.getOptions().isEmpty() ? null : field.getOptions().split("\n");
                 final boolean editable = (field.isEditableByProjectAdmins() || isSysadmin);
 
                 // User specified a value that isn't one of the options

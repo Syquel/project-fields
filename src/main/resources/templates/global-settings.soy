@@ -17,7 +17,7 @@
     <h2>Custom project fields</h2>
     {if isNonnull($message)}
         <div class="aui-message aui-message-{$message['type']}">
-            <p>{$message['message']}</p>
+            <p>{$message['message']|changeNewlineToBr}</p>
         </div>
     {/if}
     <div id="custom-fields-help">

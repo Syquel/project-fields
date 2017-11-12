@@ -39,11 +39,12 @@
                 </td>
                 <td>
                     {if isNonnull($field['options']) and $field['editable']}
-                    <aui-select name="val_{$field['field'].ID}" placeholder="Choose value">
+                    <select name="val_{$field['field'].ID}" placeholder="Choose value">
+                        <option value="" class="empty-option">(None)</option>
                         {foreach $opt in $field['options']}
-                        <aui-option {($field['value'] == $opt) ? 'selected' : ''}>{$opt}</aui-option>
+                        <option {($field['value'] == $opt) ? 'selected' : ''}>{$opt}</option>
                         {/foreach}
-                    </aui-select>
+                    </select>
                     {else}
                     <input type="text" class="text" name="val_{$field['field'].ID}" value="{$field['value']}" placeholder="Enter value" {$field['editable'] ? '' : 'readonly'}>
                     {/if}
@@ -62,7 +63,7 @@
         <p>
             There are no custom fields defined.
             {if isNonnull($configUrl)}
-            Add new custom fields in the <a href="$configUrl">Bitbucket Administration panel</a>.
+            Add new custom fields in the <a href="{$configUrl}">Bitbucket Administration panel</a>.
             {else}
             Contact a system administrator to add new custom fields.
             {/if}

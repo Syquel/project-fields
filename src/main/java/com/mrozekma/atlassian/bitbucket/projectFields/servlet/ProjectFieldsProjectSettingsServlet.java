@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
     private static final Logger log = LoggerFactory.getLogger(ProjectFieldsProjectSettingsServlet.class);
@@ -70,6 +71,13 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
     }
 
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        for(Map.Entry<String, String[]> e : req.getParameterMap().entrySet()) {
+            resp.getWriter().println(e.getKey());
+            for(String x : e.getValue()) {
+                resp.getWriter().println("  " + x);
+            }
+        }
+
         final Map<Integer, String> vals = new HashMap<>();
         for(Map.Entry<String, String[]> e : req.getParameterMap().entrySet()) {
             final String k = e.getKey();
@@ -113,6 +121,7 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
 
                 // User specified a value that isn't one of the options
                 if(updates != null && options != null && updates.containsKey(field.getID()) && !Arrays.asList(options).contains(updates.get(field.getID()))) {
+                    System.out.format("Nulling %d (%s not in %s)\n", field.getID(), updates.get(field.getID()), Arrays.stream(options).map(s -> String.format("\"%s\"", s)).collect(Collectors.joining(", ")));
                     updates.put(field.getID(), null);
                 }
 

@@ -1,4 +1,8 @@
-form.aui input.text[readonly] {
+form.aui #custom-fields input.text[readonly] {
     background-color: #f5f5f5;
     color: #999;
+}
+
+form.aui #custom-fields option.empty-option {
+    font-style: italic;
 }

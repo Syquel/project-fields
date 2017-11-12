@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
     private static final Logger log = LoggerFactory.getLogger(ProjectFieldsGlobalSettingsServlet.class);
@@ -88,8 +89,9 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
         if(true) return;
         */
 
+        final List<String> errors = new LinkedList<>();
         boolean changed = this.activeObjects.executeInTransaction(() -> {
-            boolean[] rtn = {false};
+            final boolean[] rtn = {false};
 
             // POST data: seq_#, name_#, options_#, description_# (where # is either the ID or something starting with 'new')
             // Also has the key 'delete' containing the ID of every deleted field
@@ -113,7 +115,10 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
                 }
 
                 final String name = req.getParameter("name_" + id);
-                if(!name.equals(field.getName())) {
+                if(name.isEmpty()) {
+                    errors.add("Cannot make field name empty");
+                    continue;
+                } else if(!name.equals(field.getName())) {
                     rtn[0] = true;
                     field.setName(name);
                 }
@@ -159,11 +164,20 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
             Optional.ofNullable(req.getParameterValues("add")).ifPresent(toAdd -> {
                 for(String id : toAdd) {
                     rtn[0] = true;
+                    final String name = req.getParameter("name_" + id);
+                    if(name.isEmpty()) {
+                        errors.add("New field name cannot be empty");
+                        continue;
+                    }
+                    String options = req.getParameter("options_" + id);
+                    if(options != null) {
+                        options = options.replaceAll("(\r?\n)+", "\n");
+                    }
                     activeObjects.create(
                             CustomField.class,
                             new DBParam("SEQ", Integer.parseInt(req.getParameter("seq_" + id))),
-                            new DBParam("NAME", req.getParameter("name_" + id)),
-                            new DBParam("OPTIONS", req.getParameter("options_" + id)),
+                            new DBParam("NAME", name),
+                            new DBParam("OPTIONS", options),
                             new DBParam("DESCRIPTION", req.getParameter("description_" + id)),
                             new DBParam("VISIBLE", (req.getParameter("visible_" + id) != null)),
                             new DBParam("EDITABLE", (req.getParameter("editable_" + id) != null))
@@ -174,9 +188,10 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
             return rtn[0];
         });
 
-        final ResultMessage message = changed
-                ? new ResultMessage("success", this.i18n.getText("bitbucket.web.changes.saved"))
-                : new ResultMessage("info", "No changes found.");
+        final ResultMessage message =
+                !errors.isEmpty() ? new ResultMessage("error", errors.stream().distinct().collect(Collectors.joining("\n"))) :
+                changed ? new ResultMessage("success", this.i18n.getText("bitbucket.web.changes.saved")) :
+                new ResultMessage("info", "No changes found.");
         this.renderTemplate(resp, Optional.of(message));
     }
 

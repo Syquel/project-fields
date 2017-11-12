@@ -71,7 +71,8 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
     }
 
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        for(Map.Entry<String, String[]> e : req.getParameterMap().entrySet()) {
+        for(Object e_ : req.getParameterMap().entrySet()) {
+            final Map.Entry<String, String[]> e = (Map.Entry<String, String[]>)e_; // Java EE 5's getParameterMap() doesn't have generics
             resp.getWriter().println(e.getKey());
             for(String x : e.getValue()) {
                 resp.getWriter().println("  " + x);
@@ -79,7 +80,8 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
         }
 
         final Map<Integer, String> vals = new HashMap<>();
-        for(Map.Entry<String, String[]> e : req.getParameterMap().entrySet()) {
+        for(Object e_ : req.getParameterMap().entrySet()) {
+            final Map.Entry<String, String[]> e = (Map.Entry<String, String[]>)e_; // Java EE 5's getParameterMap() doesn't have generics
             final String k = e.getKey();
             if(!k.startsWith("val_")) {
                 throw new IllegalArgumentException(k);

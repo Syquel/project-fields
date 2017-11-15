@@ -62,6 +62,7 @@
   <!-- Public -->
 
   <web-resource key="project-fields-project-list-resource" name="${project.name} project list web resource">
+    <resource name="project_fields.css" type="download" location="/css/project_fields.css"/>
     <resource name="project_fields.js" type="download" location="/js/project_fields.js"/>
     <context>bitbucket.page.projectList</context>
     <data key="fields" class="com.mrozekma.atlassian.bitbucket.projectFields.servlet.ProjectFieldsData"/>

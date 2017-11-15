@@ -1,0 +1,4 @@
+#projects-table {
+    /* We want the custom field columns to size properly based on contents */
+    table-layout: auto;
+}

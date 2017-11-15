@@ -11,7 +11,7 @@ require(['jquery'], function($) {
             cell = $(this);
             projectKey = $(this).text();
             $.each(data['fields'], function(_, field) {
-                newCell = $("<td/>").addClass('project-key');
+                newCell = $("<td/>").addClass('project-custom-field');
                 vals = data['projects'][projectKey];
                 if(vals) {
                     val = vals[field['name']];

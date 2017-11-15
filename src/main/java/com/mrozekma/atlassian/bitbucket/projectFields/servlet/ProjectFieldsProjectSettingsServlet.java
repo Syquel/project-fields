@@ -71,14 +71,6 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
     }
 
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        for(Object e_ : req.getParameterMap().entrySet()) {
-            final Map.Entry<String, String[]> e = (Map.Entry<String, String[]>)e_; // Java EE 5's getParameterMap() doesn't have generics
-            resp.getWriter().println(e.getKey());
-            for(String x : e.getValue()) {
-                resp.getWriter().println("  " + x);
-            }
-        }
-
         final Map<Integer, String> vals = new HashMap<>();
         for(Object e_ : req.getParameterMap().entrySet()) {
             final Map.Entry<String, String[]> e = (Map.Entry<String, String[]>)e_; // Java EE 5's getParameterMap() doesn't have generics
@@ -123,7 +115,6 @@ public class ProjectFieldsProjectSettingsServlet extends HttpServlet{
 
                 // User specified a value that isn't one of the options
                 if(updates != null && options != null && updates.containsKey(field.getID()) && !Arrays.asList(options).contains(updates.get(field.getID()))) {
-                    System.out.format("Nulling %d (%s not in %s)\n", field.getID(), updates.get(field.getID()), Arrays.stream(options).map(s -> String.format("\"%s\"", s)).collect(Collectors.joining(", ")));
                     updates.put(field.getID(), null);
                 }
 

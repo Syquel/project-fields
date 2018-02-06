@@ -2,12 +2,13 @@ require(['jquery'], function($) {
     $(function() {
         data = WRM.data.claim('com.mrozekma.atlassian.bitbucket.projectFields:project-fields-project-list-resource.fields');
 
-        cell = $('#projects-table th.project-key');
+        tbl = $('#projects-table,#projects-container table');
+        cell = $('th.project-key', tbl);
         $.each(data['fields'], function(_, field) {
             cell = $("<th/>").addClass('project-custom-field').attr('scope', 'col').attr('title', field['description']).text(field['name']).tooltip().insertAfter(cell);
         });
 
-        $('#projects-table td.project-key').each(function() {
+        $('td.project-key', tbl).each(function() {
             cell = $(this);
             projectKey = $(this).text();
             $.each(data['fields'], function(_, field) {

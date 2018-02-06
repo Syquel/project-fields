@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <atlassian-plugin-marketing>
     <compatibility>
-        <product name="bitbucket" min="5.0.0" max="5.5.0"/>
+        <product name="bitbucket" min="5.0.0" max="5.7.1"/>
     </compatibility>
     <logo image="images/logo.png"/>
     <highlights>

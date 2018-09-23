@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.mrozekma.atlassian.bitbucket.projectFields.ao.DBHelper.nullToEmpty;
+
 public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
     private static final Logger log = LoggerFactory.getLogger(ProjectFieldsGlobalSettingsServlet.class);
 
@@ -124,7 +126,7 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
                 }
 
                 final String options = req.getParameter("options_" + id).replaceAll("(\r?\n)+", "\n");
-                if(!options.equals(field.getOptions())) {
+                if(!options.equals(nullToEmpty(field.getOptions()))) {
                     rtn[0] = true;
                     field.setOptions(options);
 
@@ -140,7 +142,7 @@ public class ProjectFieldsGlobalSettingsServlet extends HttpServlet{
                 }
 
                 final String description = req.getParameter("description_" + id);
-                if(!description.equals(field.getDescription())) {
+                if(!description.equals(nullToEmpty(field.getDescription()))) {
                     rtn[0] = true;
                     field.setDescription(description);
                 }

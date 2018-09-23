@@ -20,6 +20,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.mrozekma.atlassian.bitbucket.projectFields.ao.DBHelper.nullToEmpty;
+
 public class ProjectFieldsData implements WebResourceDataProvider, Jsonable {
     @ComponentImport
     private final UserManager userManager;
@@ -78,7 +80,7 @@ public class ProjectFieldsData implements WebResourceDataProvider, Jsonable {
         for(CustomField field : this.activeObjects.find(CustomField.class, Query.select().where("VISIBLE = ?", true).order("SEQ asc"))) {
             final JsonObject fieldJSON = new JsonObject();
             fieldJSON.addProperty("name", field.getName());
-            fieldJSON.addProperty("description", field.getDescription());
+            fieldJSON.addProperty("description", nullToEmpty(field.getDescription()));
             jsonFields.add(fieldJSON);
             fields.put(field.getID(), field);
         }

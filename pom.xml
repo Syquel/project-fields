@@ -13,7 +13,7 @@
     <description>Add custom arbitrary fields to Bitbucket projects.</description>
     <packaging>atlassian-plugin</packaging>
     <scm>
-        <developerConnection>scm:git:git@bitbucket.org:mrozekma/project-fields.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:mrozekma/project-fields.git</developerConnection>
       <tag>HEAD</tag>
   </scm>
     <dependencyManagement>
